@@ -1,0 +1,10 @@
+<!-- @file resources.qrc -->
+<!-- @description Qt 资源文件，打包前端页面静态资源 -->
+<!-- @author Codex -->
+<!-- @date 2026-02-27 -->
+<RCC>
+  <qresource prefix="/web">
+    <file alias="dishvision.css">../web-app/src/styles/dishvision.css</file>
+    <file>web/index.html</file>
+  </qresource>
+</RCC>

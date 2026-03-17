@@ -1,0 +1,1883 @@
+/*
+ * @file dishvision.css
+ * @description 基于 DishVision frontend/src/app/globals.css 转换的样式文件（适配 Vite + QtWebEngine）。
+ * @author Codex
+ * @date 2026-02-27
+ */
+
+
+
+/* ============================================
+   轻量扁平设计系统
+   ============================================ */
+
+/* ============================================
+   设计令牌 (Design Tokens)
+   ============================================ */
+:root {
+  /* 基础圆角 */
+  --radius: 0.625rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  --font-geist-sans: "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  --font-geist-mono: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* 强调色 */
+  --liquid-accent: #3b82f6;
+  --liquid-accent-hover: rgba(59, 130, 246, 0.68);
+  --liquid-accent-focus: rgba(59, 130, 246, 0.74);
+  --liquid-accent-ring: rgba(59, 130, 246, 0.22);
+  --liquid-accent-ring-soft: rgba(59, 130, 246, 0.16);
+  --liquid-accent-selection: rgba(59, 130, 246, 0.24);
+
+  /* 语义色 */
+  --background: #f5f7fa;
+  --foreground: #1a1d23;
+  --card: #ffffff;
+  --card-foreground: #1a1d23;
+  --popover: #ffffff;
+  --popover-foreground: #1a1d23;
+  --primary: var(--liquid-accent);
+  --primary-foreground: #ffffff;
+  --secondary: #eef1f5;
+  --secondary-foreground: #3a3f4a;
+  --muted: #f0f2f5;
+  --muted-foreground: #6b7280;
+  --accent: #e8ecf1;
+  --accent-foreground: #2d3340;
+  --destructive: #ef4444;
+  --border: #e2e5ea;
+  --input: #eef0f4;
+  --ring: var(--liquid-accent);
+
+  /* 图表色 */
+  --chart-1: #4f7df5;
+  --chart-2: #38a3c5;
+  --chart-3: #3bb89a;
+  --chart-4: #7c5fc7;
+  --chart-5: #7db855;
+
+  /* 侧边栏 */
+  --sidebar: #f0f2f5;
+  --sidebar-foreground: #1c2028;
+  --sidebar-primary: var(--liquid-accent);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e8ecf1;
+  --sidebar-accent-foreground: #2d3340;
+  --sidebar-border: #e2e5ea;
+  --sidebar-ring: var(--liquid-accent);
+
+  /* 背景层 */
+  --glass-bg-light: rgba(0, 0, 0, 0.03);
+  --glass-bg-medium: rgba(0, 0, 0, 0.05);
+
+  /* 边框 */
+  --glass-border-subtle: #e8eaee;
+  --glass-border-medium: #dde0e5;
+  --glass-border-strong: #d0d4da;
+
+  /* 材质令牌 */
+  --surface-content-bg: #ffffff;
+  --surface-content-border: #e2e5ea;
+  --surface-content-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --chrome-glass-bg: #ffffff;
+  --chrome-glass-border: #e2e5ea;
+  --chrome-glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --control-glass-bg: #ffffff;
+  --control-glass-border: #d5d9e0;
+  --control-glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --dialog-mask-bg: rgba(0, 0, 0, 0.3);
+
+  /* 表格 */
+  --table-header-bg: #f8f9fb;
+  --table-header-border: #e2e5ea;
+  --table-header-foreground: #5a5f6b;
+  --table-row-divider: #eef0f3;
+  --table-row-hover-bg: #f5f7fa;
+  --table-row-selected-bg: rgba(59, 130, 246, 0.08);
+  --table-row-focus-bg: rgba(59, 130, 246, 0.06);
+  --table-row-checked-bg: rgba(59, 130, 246, 0.03);
+  --table-row-current-bg: rgba(59, 130, 246, 0.22);
+  --table-row-checked-indicator: rgba(59, 130, 246, 0.32);
+  --table-row-current-indicator: #2563eb;
+  --table-row-current-ring: rgba(59, 130, 246, 0.34);
+  /* 固定列使用不透明色，避免横向滚动时出现透底。 */
+  --table-header-fixed-bg: #f8f9fb;
+  --table-row-fixed-base-bg: #ffffff;
+  --table-row-hover-fixed-bg: #f5f7fa;
+  --table-row-checked-fixed-bg: #f7faff;
+  --table-row-current-fixed-bg: #d6e7ff;
+  --table-row-selected-fixed-bg: #edf4ff;
+  --table-row-focus-fixed-bg: #eef3ff;
+  --table-cell-padding-y: 10px;
+  --table-cell-padding-x: 14px;
+
+  /* 选择器/日期/复选框 */
+  --select-option-highlight-bg: #f5f7fa;
+  --select-option-active-bg: rgba(59, 130, 246, 0.1);
+  --select-option-active-border: rgba(59, 130, 246, 0.3);
+  --date-cell-selected-bg: rgba(59, 130, 246, 0.12);
+  --date-cell-selected-border: rgba(59, 130, 246, 0.35);
+  --date-cell-selected-foreground: #1e40af;
+  --checkbox-table-bg: #f8f9fb;
+  --checkbox-table-border: #e2e5ea;
+  --checkbox-table-hover-bg: #f0f2f5;
+  --checkbox-table-selected-bg: rgba(59, 130, 246, 0.12);
+  --checkbox-table-selected-border: rgba(59, 130, 246, 0.4);
+
+  /* 指挥条与控件尺寸 */
+  --liquid-chrome-rest-height: 56px;
+  --liquid-chrome-rest-bg: #ffffff;
+  --liquid-chrome-rest-border: #e2e5ea;
+  --liquid-chrome-rest-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --liquid-chrome-condensed-height: 44px;
+  --liquid-chrome-condensed-bg: #ffffff;
+  --liquid-chrome-condensed-border: #e2e5ea;
+  --liquid-chrome-condensed-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --liquid-control-height-sm: 34px;
+  --liquid-control-height: 36px;
+  --liquid-control-height-lg: 42px;
+  --liquid-control-padding-sm: 10px;
+  --liquid-control-padding-md: 14px;
+  --liquid-control-padding-lg: 22px;
+  --liquid-control-padding-multiline-x: 12px;
+  --liquid-control-padding-multiline-y: 10px;
+  --liquid-control-font-size-sm: 13px;
+  --liquid-control-font-size-md: 13px;
+  --liquid-control-font-size-lg: 15px;
+  --liquid-checkbox-box-size: 15px;
+  --liquid-radius-pill: 999px;
+  --liquid-focus-ring-width: 2px;
+  --liquid-focus-ring-color: rgba(59, 130, 246, 0.16);
+
+  /* 阴影 */
+  --glass-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --glass-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.07);
+  --glass-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --glass-shadow-xl: 0 6px 16px rgba(0, 0, 0, 0.1);
+  --glass-glow-inner: none;
+
+  /* 彩虹色板 */
+  --rainbow-rose: #fce4ec;
+  --rainbow-peach: #fff3e0;
+  --rainbow-amber: #fff8e1;
+  --rainbow-lime: #e8f5e9;
+  --rainbow-cyan: #e0f7fa;
+  --rainbow-blue: #e3f2fd;
+  --rainbow-violet: #ede7f6;
+  --rainbow-pink: #fce4ec;
+
+  /* 布局尺寸 */
+  --sidebar-width: 260px;
+  --sidebar-width-collapsed: 72px;
+  --header-height: 64px;
+  --content-max-width: 1280px;
+  --content-padding: 16px;
+
+  /* 动画时长 */
+  --duration-fast: 100ms;
+  --duration-normal: 170ms;
+  --duration-slow: 260ms;
+  --duration-glacial: 800ms;
+
+  /* 缓动函数 */
+  --ease-glass: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+/* 运行时轻量模式：用于 Qt/Windows 设备收敛重绘成本，减少卡顿与闪烁。 */
+html.runtime-perf-lite {
+  --duration-fast: 80ms;
+  --duration-normal: 130ms;
+  --duration-slow: 180ms;
+  --surface-content-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --chrome-glass-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+  --control-glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --liquid-chrome-rest-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --liquid-chrome-condensed-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --glass-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --glass-shadow-md: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --glass-shadow-lg: 0 2px 6px rgba(0, 0, 0, 0.07);
+}
+
+/* liquid-v2 命名空间已合并到 :root，不再需要单独覆盖。 */
+
+/* ============================================
+   背景系统
+   ============================================ */
+
+.bg-aurora,
+.bg-aurora-animated {
+  background: #f5f7fa;
+}
+
+/* ============================================
+   效果类
+   ============================================ */
+
+.surface-content,
+.glass {
+  background: var(--surface-content-bg);
+  border: 1px solid var(--surface-content-border);
+  box-shadow: var(--surface-content-shadow);
+  transition: border-color var(--duration-normal) var(--ease-glass);
+}
+
+.chrome-glass {
+  background: var(--chrome-glass-bg);
+  border: 1px solid var(--chrome-glass-border);
+  box-shadow: var(--chrome-glass-shadow);
+  transition: border-color var(--duration-normal) var(--ease-glass);
+}
+
+.control-glass,
+.glass-input,
+.glass-btn {
+  background: var(--control-glass-bg);
+  border: 1px solid var(--control-glass-border);
+  box-shadow: var(--control-glass-shadow);
+  min-height: var(--liquid-control-height);
+  transition: border-color var(--duration-fast) var(--ease-glass);
+}
+
+.glass-light {
+  background: #f8f9fb;
+  border: 1px solid #e8eaee;
+  box-shadow: var(--glass-shadow-sm);
+}
+
+.glass-heavy {
+  background: #f5f6f8;
+  border: 1px solid #dde0e5;
+  box-shadow: var(--glass-shadow-lg);
+  transition: border-color var(--duration-normal) var(--ease-glass);
+}
+
+.glass-solid {
+  background: rgba(252, 252, 253, 0.96);
+  border: 1px solid rgba(210, 214, 222, 0.58);
+  box-shadow: var(--glass-shadow-lg);
+  transition: border-color var(--duration-normal) var(--ease-glass);
+}
+
+/* 玻璃悬停/按压效果 */
+.glass-hover:hover {
+  border-color: var(--chrome-glass-border);
+  box-shadow: var(--glass-shadow-lg), var(--glass-glow-inner);
+}
+
+.glass-hover:active {
+  box-shadow: var(--glass-shadow-sm), var(--glass-glow-inner);
+}
+
+/* ============================================
+   玻璃按钮系统
+   ============================================ */
+
+.glass-btn {
+  border-radius: var(--radius-lg);
+  min-height: var(--liquid-control-height);
+  padding: 0 var(--liquid-control-padding-md);
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--foreground);
+}
+
+.glass-btn:hover {
+  border-color: var(--liquid-accent-focus);
+  background: rgba(245, 247, 250, 0.95);
+  box-shadow: var(--control-glass-shadow);
+}
+
+.glass-btn:focus-visible {
+  outline: none;
+  box-shadow:
+    var(--glass-glow-inner),
+    0 0 0 var(--liquid-focus-ring-width) var(--liquid-focus-ring-color);
+}
+
+.glass-btn:active {
+  transform: scale(0.995);
+  border-color: var(--liquid-accent-focus);
+  filter: brightness(0.99);
+  box-shadow: var(--glass-shadow-sm);
+}
+
+.glass-btn:disabled,
+.glass-btn-primary:disabled,
+.glass-btn-success:disabled,
+.glass-btn-warning:disabled,
+.glass-btn-danger:disabled,
+.glass-btn-ghost:disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+  transform: none;
+  filter: none;
+}
+
+/* 实色按钮：保持既有结构，仅按原项目语义切换色板。 */
+.glass-btn-primary,
+.glass-btn-success,
+.glass-btn-warning,
+.glass-btn-danger {
+  background: linear-gradient(180deg, var(--button-fill-start), var(--button-fill-end));
+  border: 1px solid var(--button-border-color);
+  box-shadow: var(--glass-shadow-md);
+  border-radius: var(--radius-lg);
+  min-height: var(--liquid-control-height);
+  padding: 0 var(--liquid-control-padding-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-glass);
+  color: #ffffff;
+}
+
+.glass-btn-primary {
+  --button-fill-start: #69c0ff;
+  --button-fill-end: #40a9ff;
+  --button-border-color: rgba(64, 169, 255, 0.46);
+  --button-border-hover: rgba(64, 169, 255, 0.62);
+  --button-focus-ring: rgba(64, 169, 255, 0.14);
+}
+
+.glass-btn-success {
+  --button-fill-start: #5fdf9f;
+  --button-fill-end: #35d488;
+  --button-border-color: rgba(53, 212, 136, 0.46);
+  --button-border-hover: rgba(53, 212, 136, 0.62);
+  --button-focus-ring: rgba(53, 212, 136, 0.14);
+}
+
+.glass-btn-warning {
+  --button-fill-start: #ffd666;
+  --button-fill-end: #ffc53d;
+  --button-border-color: rgba(255, 197, 61, 0.48);
+  --button-border-hover: rgba(255, 197, 61, 0.64);
+  --button-focus-ring: rgba(255, 197, 61, 0.15);
+}
+
+.glass-btn-danger {
+  --button-fill-start: #ff9d97;
+  --button-fill-end: #ff7f78;
+  --button-border-color: rgba(255, 127, 120, 0.48);
+  --button-border-hover: rgba(255, 127, 120, 0.64);
+  --button-focus-ring: rgba(255, 127, 120, 0.14);
+}
+
+.glass-btn-primary:hover,
+.glass-btn-success:hover,
+.glass-btn-warning:hover,
+.glass-btn-danger:hover {
+  border-color: var(--button-border-hover);
+  filter: brightness(1.01);
+  box-shadow: var(--glass-shadow-md);
+}
+
+.glass-btn-primary:focus-visible,
+.glass-btn-success:focus-visible,
+.glass-btn-warning:focus-visible,
+.glass-btn-danger:focus-visible {
+  outline: none;
+  box-shadow:
+    var(--glass-shadow-md),
+    0 0 0 var(--liquid-focus-ring-width) var(--button-focus-ring);
+}
+
+.glass-btn-primary:active,
+.glass-btn-success:active,
+.glass-btn-warning:active,
+.glass-btn-danger:active {
+  transform: scale(0.996);
+  filter: brightness(0.985);
+}
+
+/* 幽灵按钮：与导航样式解耦，避免继承侧边栏语义。 */
+.glass-btn-ghost {
+  min-height: var(--liquid-control-height);
+  padding: 0 var(--liquid-control-padding-md);
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.58);
+  color: var(--foreground);
+  cursor: pointer;
+  transition:
+    border-color var(--duration-fast) var(--ease-glass),
+    background-color var(--duration-fast) var(--ease-glass);
+}
+
+.glass-btn-ghost:hover {
+  border-color: var(--control-glass-border);
+  background: rgba(240, 243, 248, 0.88);
+}
+
+.glass-btn-ghost:focus-visible {
+  outline: none;
+  border-color: rgba(24, 144, 255, 0.74);
+  box-shadow: 0 0 0 var(--liquid-focus-ring-width) rgba(24, 144, 255, 0.16);
+}
+
+.glass-btn-ghost:active {
+  border-color: rgba(24, 144, 255, 0.68);
+  filter: brightness(0.99);
+}
+
+/* ============================================
+   玻璃输入框
+   ============================================ */
+
+.glass-input {
+  border-radius: var(--radius-md);
+  min-height: var(--liquid-control-height);
+  padding: 0 var(--liquid-control-padding-md);
+  color: var(--foreground);
+  outline: none;
+}
+
+.glass-input::placeholder {
+  color: var(--muted-foreground);
+}
+
+.glass-input:hover {
+  border-color: var(--liquid-accent-hover);
+}
+
+.glass-input:focus,
+.glass-input:focus-visible {
+  border-color: var(--liquid-accent-focus);
+  box-shadow:
+    var(--glass-glow-inner),
+    0 0 0 var(--liquid-focus-ring-width) var(--liquid-focus-ring-color);
+}
+
+/* ============================================
+   布局系统
+   ============================================ */
+
+/* 应用外壳 */
+.app-shell {
+  display: flex;
+  min-height: 100dvh;
+  width: 100%;
+}
+
+/* 侧边栏容器 */
+.app-sidebar {
+  width: var(--sidebar-width);
+  min-height: 100dvh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 8px;
+}
+
+/* 侧边栏内部玻璃面板 */
+.app-sidebar-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-2xl);
+  padding: 16px 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* 主内容区 */
+.app-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  padding: var(--content-padding);
+  min-height: 100dvh;
+}
+
+/* 无侧边栏模式：用于当前 Qt 独立页面场景。 */
+.app-shell-no-sidebar .app-content {
+  margin-left: 0;
+  width: 100%;
+}
+
+/* 内容区内部容器 */
+.app-content-inner {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* 无侧边栏首页全宽模式，避免内容被双层 padding 与 max-width 压缩。 */
+.app-content-full {
+  padding: 6px;
+}
+
+.app-content-inner-full {
+  max-width: none;
+  margin: 0;
+}
+
+/* ============================================
+   页面模板规范（全局统一）
+   ============================================ */
+
+.app-page,
+.dv-page {
+  padding: 16px;
+  display: grid;
+  gap: 16px;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
+.app-page-fluid {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 6px;
+}
+
+/* Liquid v2：页面顶部液态指挥条。 */
+.liquid-command-bar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: var(--liquid-chrome-rest-height);
+  padding: 7px 10px;
+  margin-bottom: 8px;
+  border-radius: var(--liquid-radius-pill);
+  background: var(--liquid-chrome-rest-bg);
+  border: 1px solid var(--liquid-chrome-rest-border);
+  box-shadow: var(--liquid-chrome-rest-shadow);
+  transition:
+    min-height var(--duration-fast) var(--ease-glass),
+    padding var(--duration-fast) var(--ease-glass),
+    border-color var(--duration-fast) var(--ease-glass),
+    background-color var(--duration-fast) var(--ease-glass);
+}
+
+.liquid-command-bar.is-condensed {
+  min-height: var(--liquid-chrome-condensed-height);
+  padding: 4px 8px;
+  background: var(--liquid-chrome-condensed-bg);
+  border-color: var(--liquid-chrome-condensed-border);
+  box-shadow: var(--liquid-chrome-condensed-shadow);
+}
+
+.liquid-command-meta {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.liquid-command-title {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.liquid-command-meta .text-caption {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.liquid-toolbar-group {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.liquid-toolbar-cluster {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.liquid-toolbar-cluster-main {
+  justify-content: flex-end;
+}
+
+.liquid-toolbar-cluster-secondary {
+  justify-content: flex-end;
+  opacity: 0.96;
+}
+
+.liquid-command-controls {
+  gap: 10px;
+}
+
+.command-compiler-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.command-compiler-field .text-caption {
+  white-space: nowrap;
+}
+
+.command-compiler-field .select-wrap {
+  width: 180px;
+  max-width: 100%;
+}
+
+.command-compiler-field .input-wrap {
+  width: 180px;
+  max-width: 100%;
+}
+
+.liquid-toolbar-divider {
+  width: 1px;
+  height: 26px;
+  border-radius: 999px;
+  background: rgba(210, 214, 222, 0.78);
+}
+
+.liquid-command-bar.is-condensed .liquid-toolbar-divider {
+  height: 22px;
+}
+
+.app-page-header,
+.dv-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border-radius: var(--radius-2xl);
+}
+
+.app-header-actions,
+.dv-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-content-grid,
+.dv-content-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1.55fr 1fr;
+  gap: 14px;
+}
+
+/* 四格布局：左侧更宽，顺序为左上→右上→左下→右下。 */
+.app-content-grid-2x2-left {
+  grid-template-columns: 1.35fr 1fr;
+  /* 四格布局间距收紧，避免面板之间留白过大。 */
+  gap: 8px;
+  grid-template-areas:
+    "part-list part-params"
+    "craft-list craft-params";
+}
+
+/* 仅收紧四格布局中的卡片内边距，不影响其他页面面板。 */
+.app-content-grid-2x2-left .app-panel {
+  padding: 10px;
+  gap: 8px;
+  /* 让面板内部内容从顶部紧凑排布，避免最小高度导致中间留白过大。 */
+  align-content: start;
+}
+
+.app-panel,
+.dv-panel {
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.16);
+  min-height: clamp(280px, 34dvh, 420px);
+}
+
+/* 工作区主面板：提升折射层次，避免看起来像普通卡片。 */
+.liquid-panel {
+  background: var(--surface-content-bg);
+  border-color: var(--surface-content-border);
+  box-shadow: var(--surface-content-shadow);
+}
+
+.app-panel-part-list {
+  grid-area: part-list;
+}
+
+.app-panel-part-params {
+  grid-area: part-params;
+}
+
+.app-panel-craft-list {
+  grid-area: craft-list;
+}
+
+.app-panel-craft-params {
+  grid-area: craft-params;
+}
+
+.app-inline-input {
+  width: 120px;
+  margin-left: auto;
+}
+
+.app-panel-header,
+.dv-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.app-table-wrap,
+.dv-table-wrap {
+  overflow: auto;
+}
+
+.app-table,
+.dv-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 620px;
+}
+
+.app-table th,
+.app-table td,
+.dv-table th,
+.dv-table td {
+  text-align: left;
+  padding: 10px;
+  border-bottom: 1px solid var(--glass-border-subtle);
+}
+
+.app-col-select,
+.dv-col-select {
+  width: 42px;
+}
+
+.app-table tbody tr,
+.dv-table tbody tr {
+  cursor: pointer;
+}
+
+.app-table tbody tr:hover,
+.app-table tbody tr.app-row-selected,
+.dv-table tbody tr:hover,
+.dv-table tbody tr.dv-row-selected {
+  background: var(--glass-bg-light);
+}
+
+.app-form-grid,
+.dv-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.app-form-grid label,
+.dv-form-grid label {
+  display: grid;
+  gap: 6px;
+}
+
+.app-form-grid .app-full-width,
+.dv-form-grid .dv-full-width {
+  grid-column: 1 / 3;
+}
+
+.app-upload-box,
+.dv-upload-box {
+  display: grid;
+  gap: 10px;
+}
+
+.app-upload-actions-row,
+.dv-upload-actions-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-upload-preview,
+.dv-upload-preview {
+  display: grid;
+  gap: 6px;
+}
+
+.app-upload-preview-image,
+.dv-upload-preview-image {
+  width: min(100%, 420px);
+  max-height: 220px;
+  border: 1px solid var(--glass-border-subtle);
+  border-radius: 8px;
+  background: #ffffff;
+  object-fit: contain;
+}
+
+.app-file-list,
+.dv-file-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.app-error-tip,
+.dv-error-tip {
+  margin: 0;
+  color: var(--destructive);
+}
+
+/* ============================================
+   零件工单页专属布局（从 index.vue scoped 样式迁移）
+   ============================================ */
+
+/* 当前页面限定在可视区内，避免四格内容把页面整体顶出滚动条。 */
+.parts-order-page.app-page.app-page-fluid {
+  min-height: calc(100dvh - 12px);
+  height: calc(100dvh - 12px);
+  max-height: calc(100dvh - 12px);
+  overflow: hidden;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* 四格区域始终保持 2x2，并让两行均分剩余高度。 */
+.parts-order-page .app-content-grid-2x2-left {
+  flex: 1 1 auto;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  grid-template-columns: 1.35fr 1fr;
+  grid-template-areas:
+    "part-list part-params"
+    "craft-list craft-params";
+  /* 上半部分略矮、下半部分略高。 */
+  grid-template-rows: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: 10px;
+}
+
+/* 四个面板统一为纵向布局：标题在上，内容容器占满剩余高度。 */
+.parts-order-page .app-panel-part-list,
+.parts-order-page .app-panel-part-params,
+.parts-order-page .app-panel-craft-list,
+.parts-order-page .app-panel-craft-params {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* 参数类面板降噪：降低玻璃高光与阴影强度，突出主列表区域。 */
+.parts-order-page .app-panel-muted {
+  background: rgba(250, 251, 252, 0.94);
+  border-color: rgba(226, 229, 234, 0.78);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* 覆盖全局最小高度，交由四格行高自适应分配。 */
+.parts-order-page .app-content-grid-2x2-left .app-panel {
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* 表格类面板纵向占满标题下方剩余空间。 */
+.parts-order-page .app-panel-part-list .table-card,
+.parts-order-page .app-panel-part-params .table-card,
+.parts-order-page .app-panel-craft-list .table-card {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 让表格滚动容器占满卡片高度，空态与数据态都稳定。 */
+.parts-order-page .app-panel-part-list .table-wrap,
+.parts-order-page .app-panel-part-params .table-wrap,
+.parts-order-page .app-panel-craft-list .table-wrap {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+}
+
+/* 表格宽度自适应内容，超出容器时在容器内部横向滚动。 */
+.parts-order-page .app-panel-part-list .table,
+.parts-order-page .app-panel-part-params .table,
+.parts-order-page .app-panel-craft-list .table {
+  width: max-content;
+  min-width: 100%;
+}
+
+/* 禁止列内容换行，避免被强制压缩在容器内。 */
+.parts-order-page .app-panel-part-list .table th,
+.parts-order-page .app-panel-part-list .table td,
+.parts-order-page .app-panel-part-params .table th,
+.parts-order-page .app-panel-part-params .table td,
+.parts-order-page .app-panel-craft-list .table th,
+.parts-order-page .app-panel-craft-list .table td {
+  white-space: nowrap;
+}
+
+/* 工序操作按钮与参数表单之间的间距控制。 */
+.parts-order-page .app-process-actions {
+  margin-top: 4px;
+  margin-bottom: 2px;
+}
+
+/* 工艺特殊性要求采用轻链接按钮表现，突出可编辑语义。 */
+.parts-order-page .app-link-button {
+  border: 0;
+  background: transparent;
+  color: #ff4949;
+  font-size: 12px;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.parts-order-page .app-link-button:hover {
+  text-decoration: underline;
+}
+
+/* 顶部 command 条：标题与制造令号并排显示，保持一行语义。 */
+.parts-order-page .app-command-meta-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.parts-order-page .app-command-meta-inline .text-caption {
+  white-space: nowrap;
+}
+
+/* 标题区节奏统一：标题、按钮和内容区之间形成稳定层级。 */
+.parts-order-page .app-panel-header {
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 4px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(226, 229, 234, 0.72);
+}
+
+.parts-order-page .app-panel-header .text-title {
+  margin: 0;
+  line-height: 1.2;
+  font-size: 0.9375rem;
+}
+
+.parts-order-page .app-panel-header .text-caption {
+  margin: 0;
+}
+
+.parts-order-page .app-header-actions-split {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+}
+
+/* 零件列表头部动作改为并排布局，允许在空间不足时整体换行。 */
+.parts-order-page .app-header-actions-inline {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+}
+
+.parts-order-page .app-header-actions-inline .app-action-group {
+  flex-wrap: nowrap;
+}
+
+.parts-order-page .app-part-param-actions {
+  justify-content: flex-end;
+}
+
+.parts-order-page .app-action-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.parts-order-page .app-action-group-secondary .base-button {
+  opacity: 0.95;
+}
+
+/* 次级动作按钮在禁用时需要显式降权，避免被上方透明度规则覆盖。 */
+.parts-order-page .app-action-group-secondary .base-button:disabled {
+  opacity: 0.52;
+}
+
+/* 面板标题按钮统一采用胶囊语义。 */
+.parts-order-page .app-panel-header .base-button {
+  border-radius: var(--liquid-radius-pill);
+}
+
+.parts-order-page .app-part-param-warning {
+  margin: 0 0 4px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(243, 156, 18, 0.35);
+  background: rgba(255, 236, 179, 0.35);
+  color: #7a4b00;
+  line-height: 1.35;
+}
+
+.parts-order-page .app-panel-part-params .table tbody tr.app-param-row-server-only td {
+  background: rgba(255, 230, 230, 0.52);
+}
+
+.parts-order-page .app-panel-part-params .table tbody tr.app-param-row-diff td.app-param-cell-diff {
+  background: rgba(255, 243, 205, 0.76);
+  color: #7a4b00;
+  font-weight: 600;
+}
+
+/* 新增工艺/工序弹窗表单控件样式。 */
+.parts-order-page .app-select-input,
+.parts-order-page .app-textarea-input {
+  width: 100%;
+}
+
+/* 添加工艺弹窗采用双列布局，对齐原项目左右分栏信息组织。 */
+.parts-order-page .app-craft-dialog-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 12px;
+}
+
+.parts-order-page .app-craft-dialog-column {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.parts-order-page .app-craft-dialog-column label {
+  display: grid;
+  gap: 6px;
+}
+
+.parts-order-page .app-textarea-input .input-core.input-multiline {
+  min-height: 84px;
+}
+
+.parts-order-page .app-dialog-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* 参数保存差异弹窗：差异明细区采用可滚动表格，避免长列表撑满弹窗。 */
+.parts-order-page .app-part-param-save-diff-panel {
+  display: grid;
+  gap: 8px;
+}
+
+.parts-order-page .app-part-param-save-diff-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.parts-order-page .app-part-param-save-diff-header .text-caption {
+  margin: 0;
+}
+
+.parts-order-page .app-part-param-save-diff-table .table-wrap {
+  max-height: 320px;
+  overflow: auto;
+}
+
+.parts-order-page .app-part-param-save-diff-table .table {
+  width: max-content;
+  min-width: 100%;
+}
+
+.parts-order-page .app-part-param-save-diff-table .table th,
+.parts-order-page .app-part-param-save-diff-table .table td {
+  white-space: nowrap;
+}
+
+/* 添加/删除工序弹窗：收窄宽度并提高面板高度，避免可选区过于紧凑。 */
+.parts-order-page .app-production-dialog .dialog-panel {
+  width: min(540px, 100%);
+  min-height: min(520px, 92dvh);
+  max-height: min(92dvh, 980px);
+}
+
+.parts-order-page .app-compiler-confirm-box .text-caption {
+  margin: 0;
+}
+
+/* 工艺参数区使用标签与控件同行布局，对齐原项目交互习惯。 */
+.parts-order-page .app-form-grid-inline {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 8px;
+}
+
+.parts-order-page .app-form-item-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.parts-order-page .app-form-item-inline > span {
+  width: 68px;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--foreground);
+}
+
+/* 让 BaseInput 根容器也参与横向分配，确保输入框自动占满剩余宽度。 */
+.parts-order-page .app-form-item-inline .input-wrap {
+  flex: 1;
+  min-width: 0;
+  gap: 0;
+}
+
+.parts-order-page .app-form-item-inline .select-wrap,
+.parts-order-page .app-form-item-inline .date-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.parts-order-page .app-form-item-inline .input-core,
+.parts-order-page .app-form-item-inline .select-trigger,
+.parts-order-page .app-form-item-inline .date-trigger {
+  font-size: 12px;
+  padding: 0 10px;
+  min-height: var(--liquid-control-height);
+}
+
+.parts-order-page .app-form-item-inline-full {
+  grid-column: 1 / 3;
+}
+
+/* 工艺参数卡中的工序表也要像其他表格一样自动占满剩余高度。 */
+.parts-order-page .app-panel-craft-params .table-card {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.parts-order-page .app-panel-craft-params .table-wrap {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+}
+
+.parts-order-page .app-panel-craft-params .table {
+  width: max-content;
+  min-width: 100%;
+}
+
+.parts-order-page .app-panel-craft-params .table th,
+.parts-order-page .app-panel-craft-params .table td {
+  white-space: nowrap;
+}
+
+/* 当前四格页头部信息收紧：消除标题与副标题默认外边距。 */
+.parts-order-page .app-panel-header .text-title,
+.parts-order-page .app-panel-header .text-caption {
+  margin: 0;
+}
+
+/* 标题区纵向间距微调，减少标题到表格的视觉空隙。 */
+.parts-order-page .app-panel-header > div:first-child {
+  display: grid;
+  gap: 2px;
+}
+
+/* 仅作用于本页 BaseTable：压缩行高提高可视信息密度。 */
+.parts-order-page .table th,
+.parts-order-page .table td {
+  padding: 10px 14px;
+}
+
+/* 空数据状态也同步收紧，避免占位高度过大。 */
+.parts-order-page .empty-cell {
+  padding: 24px 14px;
+}
+
+/* 页面头部 */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding: 0 4px;
+}
+
+/* 卡片网格 */
+.card-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.card-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card-grid-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* 响应式网格 */
+@media (max-width: 1024px) {
+  .card-grid-3,
+  .card-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1200px) {
+  .liquid-command-bar {
+    border-radius: var(--radius-xl);
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .liquid-toolbar-group {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .liquid-toolbar-cluster {
+    flex-wrap: wrap;
+  }
+
+  .command-compiler-field {
+    width: 100%;
+  }
+
+  .command-compiler-field .select-wrap {
+    flex: 1;
+    width: auto;
+  }
+
+  .liquid-toolbar-divider {
+    display: none;
+  }
+
+  .app-content-grid-2x2-left {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "part-list"
+      "part-params"
+      "craft-list"
+      "craft-params";
+  }
+
+  /* 小屏单列时恢复页面整体滚动，避免固定高容器挤压内容可读性。 */
+  .parts-order-page.app-page.app-page-fluid {
+    height: auto;
+    max-height: none;
+    overflow: auto;
+  }
+
+  .parts-order-page .app-content-grid-2x2-left {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .app-content-grid,
+  .dv-content-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .app-panel-wide,
+  .dv-panel-craft {
+    grid-column: 1 / 3;
+  }
+
+  .app-page,
+  .dv-page {
+    padding: 16px;
+  }
+
+  .app-page-header,
+  .dv-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .app-header-actions,
+  .dv-header-actions {
+    width: 100%;
+  }
+
+  .app-form-grid,
+  .dv-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-form-grid .app-full-width,
+  .dv-form-grid .dv-full-width {
+    grid-column: auto;
+  }
+
+  .parts-order-page .app-form-grid-inline {
+    grid-template-columns: 1fr;
+  }
+
+  .parts-order-page .app-craft-dialog-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .parts-order-page .app-panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .parts-order-page .app-header-actions-split {
+    width: 100%;
+    justify-items: start;
+  }
+
+  .parts-order-page .app-action-group {
+    justify-content: flex-start;
+  }
+
+  .parts-order-page .app-form-item-inline-full {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-sidebar {
+    display: none;
+  }
+
+  .app-content {
+    margin-left: 0;
+  }
+
+  .card-grid-2,
+  .card-grid-3,
+  .card-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .app-content-grid,
+  .dv-content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-panel-wide,
+  .dv-panel-craft {
+    grid-column: auto;
+  }
+
+  .app-page,
+  .dv-page {
+    padding: 12px;
+    gap: 12px;
+  }
+
+
+  .app-panel,
+  .dv-panel {
+    padding: 10px;
+  }
+
+  .app-header-actions,
+  .dv-header-actions {
+    gap: 6px;
+  }
+}
+
+/* ============================================
+   排版系统
+   ============================================ */
+
+.text-display {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+}
+
+.text-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+  color: var(--foreground);
+}
+
+.text-subtitle {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--foreground);
+}
+
+.text-body {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--foreground);
+}
+
+.text-caption {
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--muted-foreground);
+}
+
+.text-overline {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* ============================================
+   导航项样式
+   ============================================ */
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-lg);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-glass),
+    background-color var(--duration-fast) var(--ease-glass),
+    border-color var(--duration-fast) var(--ease-glass),
+    box-shadow var(--duration-fast) var(--ease-glass);
+  border: 1px solid transparent;
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  background: var(--glass-bg-light);
+  color: var(--foreground);
+  border-color: var(--glass-border-subtle);
+}
+
+.nav-item-active {
+  background: var(--chrome-glass-bg);
+  color: var(--foreground);
+  font-weight: 600;
+  border-color: var(--chrome-glass-border);
+  box-shadow: var(--glass-shadow-sm);
+}
+
+/* ============================================
+   统计卡片彩虹装饰
+   ============================================ */
+
+.stat-accent-rose { --stat-color: var(--rainbow-rose); }
+.stat-accent-peach { --stat-color: var(--rainbow-peach); }
+.stat-accent-amber { --stat-color: var(--rainbow-amber); }
+.stat-accent-lime { --stat-color: var(--rainbow-lime); }
+.stat-accent-cyan { --stat-color: var(--rainbow-cyan); }
+.stat-accent-blue { --stat-color: var(--rainbow-blue); }
+.stat-accent-violet { --stat-color: var(--rainbow-violet); }
+.stat-accent-pink { --stat-color: var(--rainbow-pink); }
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--stat-color), transparent);
+  opacity: 0.55;
+}
+
+/* ============================================
+   滚动条美化
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(160, 168, 180, 0.25);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(130, 138, 150, 0.40);
+}
+
+/* ============================================
+   基础层重置
+   ============================================ */
+
+
+/* ============================================
+   过渡动画工具类
+   ============================================ */
+
+.transition-glass {
+  transition:
+    color var(--duration-normal) var(--ease-glass),
+    background-color var(--duration-normal) var(--ease-glass),
+    border-color var(--duration-normal) var(--ease-glass),
+    box-shadow var(--duration-normal) var(--ease-glass),
+    opacity var(--duration-normal) var(--ease-glass),
+    transform var(--duration-normal) var(--ease-glass);
+}
+
+.transition-glass-fast {
+  transition:
+    color var(--duration-fast) var(--ease-glass),
+    background-color var(--duration-fast) var(--ease-glass),
+    border-color var(--duration-fast) var(--ease-glass),
+    box-shadow var(--duration-fast) var(--ease-glass),
+    opacity var(--duration-fast) var(--ease-glass),
+    transform var(--duration-fast) var(--ease-glass);
+}
+
+.transition-glass-slow {
+  transition:
+    color var(--duration-slow) var(--ease-glass),
+    background-color var(--duration-slow) var(--ease-glass),
+    border-color var(--duration-slow) var(--ease-glass),
+    box-shadow var(--duration-slow) var(--ease-glass),
+    opacity var(--duration-slow) var(--ease-glass),
+    transform var(--duration-slow) var(--ease-glass);
+}
+
+/* 淡入动画 */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in var(--duration-slow) var(--ease-glass) both;
+}
+
+/* 玻璃浮现动画 */
+@keyframes glass-emerge {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.992);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-glass-emerge {
+  animation: glass-emerge var(--duration-slow) var(--ease-glass) both;
+}
+
+/* 交错动画延迟 */
+.stagger-1 { animation-delay: 40ms; }
+.stagger-2 { animation-delay: 80ms; }
+.stagger-3 { animation-delay: 120ms; }
+.stagger-4 { animation-delay: 160ms; }
+.stagger-5 { animation-delay: 200ms; }
+.stagger-6 { animation-delay: 240ms; }
+
+/*
+ * Qt/Windows 轻量性能模式：
+ * 1. 禁止入场动画，降低首屏与弹层闪烁概率；
+ * 2. 去掉按钮按压缩放与亮度滤镜，避免频繁触发重绘；
+ * 3. 指挥条不再动画化高度/内边距，降低滚动时布局抖动。
+ */
+html.runtime-perf-lite .animate-fade-in,
+html.runtime-perf-lite .animate-glass-emerge,
+html.runtime-perf-lite .stagger-1,
+html.runtime-perf-lite .stagger-2,
+html.runtime-perf-lite .stagger-3,
+html.runtime-perf-lite .stagger-4,
+html.runtime-perf-lite .stagger-5,
+html.runtime-perf-lite .stagger-6,
+html.runtime-perf-lite .dialog-mask,
+html.runtime-perf-lite .dialog-panel,
+html.runtime-perf-lite .select-panel,
+html.runtime-perf-lite .date-panel {
+  animation: none !important;
+}
+
+html.runtime-perf-lite .glass-btn:active,
+html.runtime-perf-lite .glass-btn-primary:active,
+html.runtime-perf-lite .glass-btn-success:active,
+html.runtime-perf-lite .glass-btn-warning:active,
+html.runtime-perf-lite .glass-btn-danger:active,
+html.runtime-perf-lite .glass-btn-ghost:active {
+  transform: none;
+  filter: none;
+}
+
+html.runtime-perf-lite .glass-btn-primary:hover,
+html.runtime-perf-lite .glass-btn-success:hover,
+html.runtime-perf-lite .glass-btn-warning:hover,
+html.runtime-perf-lite .glass-btn-danger:hover,
+html.runtime-perf-lite .glass-btn-ghost:hover,
+html.runtime-perf-lite .glass-btn:hover {
+  filter: none;
+}
+
+html.runtime-perf-lite .liquid-command-bar {
+  transition:
+    border-color var(--duration-fast) var(--ease-glass),
+    background-color var(--duration-fast) var(--ease-glass);
+}
+
+html.runtime-perf-lite .liquid-command-bar.is-condensed {
+  box-shadow: var(--liquid-chrome-condensed-shadow);
+}
+
+/* ============================================
+   适配层：替代原 @layer base + @apply
+   ============================================ */
+
+* {
+  box-sizing: border-box;
+  border-color: var(--border);
+  outline-color: var(--ring);
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 手动主题覆盖：data-theme 由页面逻辑控制，优先级高于系统设置。 */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #2a2d35;
+  --foreground: #e8e9ec;
+  --card: rgba(60, 63, 72, 0.76);
+  --card-foreground: #e8e9ec;
+  --popover: rgba(62, 65, 74, 0.82);
+  --popover-foreground: #e8e9ec;
+  --secondary: rgba(68, 72, 82, 0.66);
+  --secondary-foreground: #e2e3e6;
+  --muted: rgba(64, 67, 76, 0.62);
+  --muted-foreground: #b0b4bc;
+  --accent: rgba(74, 78, 88, 0.68);
+  --accent-foreground: #e2e3e6;
+  --border: rgba(160, 164, 172, 0.38);
+  --input: rgba(64, 67, 76, 0.76);
+  --glass-bg-light: rgba(230, 232, 236, 0.24);
+  --glass-bg-medium: rgba(230, 232, 236, 0.34);
+  --surface-content-bg: rgba(62, 65, 74, 0.84);
+  --surface-content-border: rgba(186, 190, 198, 0.36);
+  --surface-content-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  --chrome-glass-bg: rgba(68, 72, 82, 0.74);
+  --chrome-glass-border: rgba(200, 204, 212, 0.38);
+  --chrome-glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --control-glass-bg: rgba(78, 82, 92, 0.78);
+  --control-glass-border: rgba(196, 200, 208, 0.38);
+  --control-glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --dialog-mask-bg: rgba(0, 0, 0, 0.5);
+  --liquid-chrome-rest-bg: rgba(74, 78, 88, 0.74);
+  --liquid-chrome-rest-border: rgba(200, 204, 212, 0.38);
+  --liquid-chrome-rest-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --liquid-chrome-condensed-bg: rgba(82, 86, 96, 0.78);
+  --liquid-chrome-condensed-border: rgba(210, 214, 222, 0.40);
+  --liquid-chrome-condensed-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+  --table-header-bg: rgba(58, 61, 70, 0.90);
+  --table-header-border: rgba(180, 184, 192, 0.34);
+  --table-header-foreground: #c8ccd4;
+  --table-row-divider: rgba(180, 184, 192, 0.28);
+  --table-row-hover-bg: rgba(59, 130, 246, 0.10);
+  --table-row-selected-bg: rgba(59, 130, 246, 0.16);
+  --table-row-focus-bg: rgba(59, 130, 246, 0.12);
+  --table-row-checked-bg: rgba(59, 130, 246, 0.07);
+  --table-row-current-bg: rgba(59, 130, 246, 0.34);
+  --table-row-checked-indicator: rgba(96, 165, 250, 0.52);
+  --table-row-current-indicator: #60a5fa;
+  --table-row-current-ring: rgba(96, 165, 250, 0.56);
+  --table-header-fixed-bg: #3a3d46;
+  --table-row-fixed-base-bg: #3e414a;
+  --table-row-hover-fixed-bg: #3e485b;
+  --table-row-checked-fixed-bg: #3c4658;
+  --table-row-current-fixed-bg: #355079;
+  --table-row-selected-fixed-bg: #3d4b66;
+  --table-row-focus-fixed-bg: #3e495f;
+}
+
+:root[data-theme="dark"] .bg-aurora,
+:root[data-theme="dark"] .bg-aurora-animated {
+  background: #2a2d35;
+}
+
+/* 系统外观兜底：仅在脚本未注入 data-theme 时启用。 */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --background: #2a2d35;
+    --foreground: #e8e9ec;
+    --card: rgba(60, 63, 72, 0.76);
+    --card-foreground: #e8e9ec;
+    --popover: rgba(62, 65, 74, 0.82);
+    --popover-foreground: #e8e9ec;
+    --secondary: rgba(68, 72, 82, 0.66);
+    --secondary-foreground: #e2e3e6;
+    --muted: rgba(64, 67, 76, 0.62);
+    --muted-foreground: #b0b4bc;
+    --accent: rgba(74, 78, 88, 0.68);
+    --accent-foreground: #e2e3e6;
+    --border: rgba(160, 164, 172, 0.38);
+    --input: rgba(64, 67, 76, 0.76);
+    --glass-bg-light: rgba(230, 232, 236, 0.24);
+    --glass-bg-medium: rgba(230, 232, 236, 0.34);
+    --surface-content-bg: rgba(62, 65, 74, 0.84);
+    --surface-content-border: rgba(186, 190, 198, 0.36);
+    --surface-content-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    --chrome-glass-bg: rgba(68, 72, 82, 0.74);
+    --chrome-glass-border: rgba(200, 204, 212, 0.38);
+    --chrome-glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    --control-glass-bg: rgba(78, 82, 92, 0.78);
+    --control-glass-border: rgba(196, 200, 208, 0.38);
+    --control-glass-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --dialog-mask-bg: rgba(0, 0, 0, 0.5);
+    --liquid-chrome-rest-bg: rgba(74, 78, 88, 0.74);
+    --liquid-chrome-rest-border: rgba(200, 204, 212, 0.38);
+    --liquid-chrome-rest-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    --liquid-chrome-condensed-bg: rgba(82, 86, 96, 0.78);
+    --liquid-chrome-condensed-border: rgba(210, 214, 222, 0.40);
+    --liquid-chrome-condensed-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+    --table-header-bg: rgba(58, 61, 70, 0.90);
+    --table-header-border: rgba(180, 184, 192, 0.34);
+    --table-header-foreground: #c8ccd4;
+    --table-row-divider: rgba(180, 184, 192, 0.28);
+    --table-row-hover-bg: rgba(59, 130, 246, 0.10);
+    --table-row-selected-bg: rgba(59, 130, 246, 0.16);
+    --table-row-focus-bg: rgba(59, 130, 246, 0.12);
+    --table-row-checked-bg: rgba(59, 130, 246, 0.07);
+    --table-row-current-bg: rgba(59, 130, 246, 0.34);
+    --table-row-checked-indicator: rgba(96, 165, 250, 0.52);
+    --table-row-current-indicator: #60a5fa;
+    --table-row-current-ring: rgba(96, 165, 250, 0.56);
+    --table-header-fixed-bg: #3a3d46;
+    --table-row-fixed-base-bg: #3e414a;
+    --table-row-hover-fixed-bg: #3e485b;
+    --table-row-checked-fixed-bg: #3c4658;
+    --table-row-current-fixed-bg: #355079;
+    --table-row-selected-fixed-bg: #3d4b66;
+    --table-row-focus-fixed-bg: #3e495f;
+  }
+
+  :root:not([data-theme]) .bg-aurora,
+  :root:not([data-theme]) .bg-aurora-animated {
+    background: #2a2d35;
+  }
+}
+
+/* 可访问性：减少动画。 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .bg-aurora-animated {
+    animation: none !important;
+  }
+}
+
+/* 可访问性：高对比增强。 */
+@media (prefers-contrast: more) {
+  :root {
+    --surface-content-border: rgba(120, 126, 138, 0.74);
+    --chrome-glass-border: rgba(105, 112, 126, 0.76);
+    --control-glass-border: rgba(95, 102, 116, 0.82);
+    --liquid-chrome-rest-border: rgba(105, 112, 126, 0.76);
+    --liquid-chrome-condensed-border: rgba(100, 108, 122, 0.80);
+    --muted-foreground: #4a5060;
+  }
+
+  .surface-content,
+  .chrome-glass,
+  .control-glass,
+  .liquid-command-bar,
+  .glass,
+  .glass-btn,
+  .glass-btn-ghost,
+  .glass-input {
+    box-shadow: none;
+  }
+}
+
+::selection {
+  background: var(--liquid-accent-selection);
+  color: var(--foreground);
+}

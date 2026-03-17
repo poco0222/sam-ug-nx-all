@@ -1,0 +1,16 @@
+# Node
+web-app/node_modules/
+web-app/dist/
+
+# CMake
+qt-host/build/
+
+# macOS
+.DS_Store
+
+# Git worktrees
+.worktrees/
+worktrees/
+
+CLAUDE.md
+AGENTS.md

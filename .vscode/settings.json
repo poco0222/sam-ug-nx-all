@@ -1,0 +1,14 @@
+{
+  "cmake.sourceDirectory": "/Users/PopoY/workingFile/AllProjects/sam/sam-ug-qt-all/qt-host",
+  "cmake.buildDirectory": "/Users/PopoY/workingFile/AllProjects/sam/sam-ug-qt-all/qt-host/build",
+  "cmake.generator": "Unix Makefiles",
+  "cmake.configureSettings": {
+    "CMAKE_PREFIX_PATH": "/Users/PopoY/Qt/6.10.2/macos",
+    "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+    "CMAKE_BUILD_TYPE": "Debug"
+  },
+  "C_Cpp.default.compileCommands": "/Users/PopoY/workingFile/AllProjects/sam/sam-ug-qt-all/qt-host/build/compile_commands.json",
+  "clangd.arguments": [
+    "--compile-commands-dir=/Users/PopoY/workingFile/AllProjects/sam/sam-ug-qt-all/qt-host/build"
+  ]
+}

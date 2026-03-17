@@ -1,0 +1,85 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:
+
+env:
+  # 与本地开发环境保持一致，避免 QtWebEngine 内核差异导致渲染行为漂移。
+  QT_VERSION: '6.10.2'
+  # 固定 Node 精确版本，降低工具链漂移风险。
+  NODE_VERSION: '20.12.2'
+  BUILD_TYPE: Release
+
+jobs:
+  build:
+    # 固定 runner 版本，避免 windows-latest 升级引入不可预期差异。
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          host: windows
+          target: desktop
+          arch: win64_msvc2022_64
+          modules: qtwebengine qtwebchannel qtpositioning
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: web-app/package-lock.json
+
+      - name: Print toolchain versions
+        shell: pwsh
+        run: |
+          Write-Host "Runner image: $env:ImageOS / $env:ImageVersion"
+          Write-Host "Qt version target: $env:QT_VERSION"
+          node -v
+          npm -v
+          cmake --version
+          qmake -v
+          windeployqt --version
+
+      - name: Install frontend dependencies
+        run: npm ci --no-audit --no-fund
+        working-directory: web-app
+
+      - name: Configure CMake
+        run: cmake -S qt-host -B qt-host/build -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+
+      - name: Build
+        run: cmake --build qt-host/build --config ${{ env.BUILD_TYPE }}
+
+      - name: Verify frontend artifacts in build directory
+        shell: pwsh
+        run: |
+          if (!(Test-Path "qt-host/build/web-dist/index.html")) {
+            throw "缺少 qt-host/build/web-dist/index.html，前端产物未正确同步。"
+          }
+          Write-Host "web-dist assets:"
+          Get-ChildItem -Path "qt-host/build/web-dist/assets" -File | Select-Object Name, Length
+
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path package
+          $exe = Get-ChildItem -Path qt-host/build -Recurse -Filter sam_ug_qt_host.exe | Select-Object -First 1
+          Copy-Item $exe.FullName package/
+          if (Test-Path qt-host/build/web-dist) {
+            Copy-Item -Recurse qt-host/build/web-dist package/web-dist
+          }
+          if (!(Test-Path package/web-dist/index.html)) {
+            throw "打包目录缺少 web-dist/index.html。"
+          }
+          windeployqt --release --no-translations package/sam_ug_qt_host.exe
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sam-ug-qt-host-windows
+          path: package/

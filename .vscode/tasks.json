@@ -1,0 +1,25 @@
+{
+  // @file tasks.json
+  // @description VSCode 任务配置，统一 Qt Host 的配置与编译命令。
+  // @author Codex
+  // @date 2026-02-27
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Qt Host (Debug)",
+      "type": "shell",
+      "command": "/bin/zsh",
+      "args": [
+        "-lc",
+        "/Users/PopoY/Qt/Tools/CMake/CMake.app/Contents/bin/cmake -S ${workspaceFolder}/qt-host -B ${workspaceFolder}/qt-host/build -G \"Unix Makefiles\" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH=/Users/PopoY/Qt/6.10.2/macos -DCMAKE_EXPORT_COMPILE_COMMANDS=ON && /Users/PopoY/Qt/Tools/CMake/CMake.app/Contents/bin/cmake --build ${workspaceFolder}/qt-host/build --config Debug --parallel 6"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$gcc"
+      ]
+    }
+  ]
+}

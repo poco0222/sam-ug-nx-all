@@ -1,0 +1,199 @@
+<!doctype html>
+<!--
+  @file index.html
+  @description Qt 内置调试页，用于验证 QWebChannel 通路。
+  @author Codex
+  @date 2026-02-27
+-->
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SAM UG Qt Host Debug Page</title>
+    <link rel="stylesheet" href="qrc:///web/dishvision.css" />
+    <script>
+      (function applyRuntimeFlags() {
+        const root = document.documentElement;
+        const userAgent = window.navigator.userAgent || "";
+        const isWindowsRuntime = /Windows/i.test(userAgent);
+        const isQtRuntime = Boolean(window.qt && window.qt.webChannelTransport);
+
+        root.setAttribute("data-theme", "light");
+        root.style.colorScheme = "light";
+
+        if (isQtRuntime) {
+          root.classList.add("runtime-qt");
+        }
+        if (isWindowsRuntime) {
+          root.classList.add("runtime-windows");
+        }
+        if (isQtRuntime || isWindowsRuntime) {
+          root.classList.add("runtime-perf-lite");
+        }
+      })();
+    </script>
+    <style>
+      :root {
+        /*
+         * 调试页强制复用 web-app 的 dishvision.css 令牌，避免双维护漂移。
+         * 这里仅保留调试页私有尺寸令牌，业务视觉令牌全部来自共享样式。
+         */
+        --debug-shell-radius: var(--radius-3xl, 1.375rem);
+        --debug-panel-radius: var(--radius-2xl, 1.125rem);
+        --debug-blur: var(--glass-blur-lg, 16px);
+        --debug-transition: var(--duration-fast, 100ms);
+        --debug-ease: var(--ease-glass, cubic-bezier(0.4, 0, 0.2, 1));
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        min-height: 100%;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        font-family: var(--font-sans, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif);
+        color: var(--foreground, oklch(0.25 0.018 242));
+      }
+
+      .shell {
+        width: min(960px, 100%);
+        border-radius: var(--debug-shell-radius);
+        border: 1px solid var(--chrome-glass-border, oklch(0.96 0.004 242 / 68%));
+        background: var(--chrome-glass-bg, oklch(1 0 0 / 64%));
+        backdrop-filter: blur(var(--debug-blur)) saturate(1.12);
+        -webkit-backdrop-filter: blur(var(--debug-blur)) saturate(1.12);
+        box-shadow: var(--chrome-glass-shadow, 0 14px 30px oklch(0.32 0.015 240 / 13%), 0 3px 8px oklch(0.32 0.015 240 / 9%), inset 0 1px 0 oklch(1 0 0 / 50%));
+        padding: 22px;
+        display: grid;
+        gap: 14px;
+        transition:
+          border-color var(--debug-transition) var(--debug-ease),
+          box-shadow var(--debug-transition) var(--debug-ease),
+          background-color var(--debug-transition) var(--debug-ease);
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .title {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      .tips {
+        margin: 0;
+        font-size: 13px;
+        color: var(--muted-foreground, oklch(0.49 0.013 244));
+      }
+
+      .status {
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--control-glass-border, oklch(0.86 0.012 242 / 58%));
+        background: var(--control-glass-bg, oklch(1 0 0 / 78%));
+        box-shadow: var(--control-glass-shadow, inset 0 1px 0 oklch(1 0 0 / 68%), 0 1px 2px oklch(0.32 0.015 240 / 10%));
+        font-size: 12px;
+        color: var(--foreground, oklch(0.25 0.018 242));
+      }
+
+      pre {
+        margin: 0;
+        min-height: 160px;
+        max-height: 56dvh;
+        overflow: auto;
+        padding: 14px;
+        border-radius: var(--debug-panel-radius);
+        background: var(--surface-content-bg, oklch(1 0 0 / 90%));
+        border: 1px solid var(--surface-content-border, oklch(0.94 0.004 242 / 66%));
+        box-shadow: var(--surface-content-shadow, 0 6px 16px oklch(0.32 0.015 240 / 8%), 0 1px 3px oklch(0.32 0.015 240 / 6%), inset 0 1px 0 oklch(1 0 0 / 50%));
+        color: var(--foreground, oklch(0.25 0.018 242));
+        font: 12px/1.5 "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+
+      @supports not ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+        .shell,
+        .status,
+        pre {
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          background: var(--surface-content-bg, oklch(0.985 0.004 242 / 97%));
+        }
+      }
+
+      html.runtime-perf-lite .shell {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: border-color var(--debug-transition) var(--debug-ease);
+      }
+
+      html.runtime-perf-lite .status,
+      html.runtime-perf-lite pre {
+        box-shadow: none;
+      }
+    </style>
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+  </head>
+  <body class="bg-aurora liquid-v2">
+    <main class="shell">
+      <header class="header">
+        <h2 class="title">QtWebChannel 调试页</h2>
+        <span class="status">等待连接</span>
+      </header>
+      <p class="tips">该页面用于验证 Qt 到前端的数据下发能力。</p>
+      <pre id="payload">等待 bridge 数据...</pre>
+    </main>
+
+    <script>
+      /** @type {HTMLElement} 上下文展示容器 */
+      const payloadNode = document.getElementById("payload");
+      /** @type {HTMLElement} 连接状态展示 */
+      const statusNode = document.querySelector(".status");
+
+      // 页面加载后建立 QWebChannel 连接。
+      new QWebChannel(qt.webChannelTransport, function (channel) {
+        const bridge = channel.objects.bridge;
+        statusNode.textContent = "已连接";
+
+        bridge.contextUpdated.connect(function (json) {
+          payloadNode.textContent = json;
+          try {
+            const parsed = JSON.parse(json);
+            if (parsed.messageId && bridge.ack) {
+              bridge.ack(parsed.messageId);
+            }
+          } catch (error) {
+            console.warn("解析 contextUpdated 数据失败", error);
+          }
+        });
+
+        bridge.bridgeError.connect(function (code, message) {
+          statusNode.textContent = "桥接错误";
+          payloadNode.textContent = `[桥接错误] ${code}: ${message}`;
+        });
+
+        if (bridge.requestInitialContext) {
+          bridge.requestInitialContext();
+        }
+      });
+    </script>
+  </body>
+</html>

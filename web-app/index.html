@@ -1,0 +1,40 @@
+<!doctype html>
+<!--
+  @file index.html
+  @description Vue3 应用入口 HTML。
+  @author Codex
+  @date 2026-02-27
+-->
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function applyRuntimeBootFlags() {
+        const root = document.documentElement;
+        const userAgent = window.navigator.userAgent || "";
+        const isWindowsRuntime = /Windows/i.test(userAgent);
+        const isQtRuntime = Boolean(window.qt && window.qt.webChannelTransport);
+
+        // 主题在首帧即固定为 light，避免 Vue 挂载后再切换导致闪烁。
+        root.setAttribute("data-theme", "light");
+        root.style.colorScheme = "light";
+
+        if (isQtRuntime) {
+          root.classList.add("runtime-qt");
+        }
+        if (isWindowsRuntime) {
+          root.classList.add("runtime-windows");
+        }
+        if (isQtRuntime || isWindowsRuntime) {
+          root.classList.add("runtime-perf-lite");
+        }
+      })();
+    </script>
+    <title>SAM Parts Order</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

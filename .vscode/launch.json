@@ -1,0 +1,25 @@
+{
+  // @file launch.json
+  // @description VSCode 调试配置，按 F5 自动启动 Qt 宿主程序。
+  // @author Codex
+  // @date 2026-02-27
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // 使用 CodeLLDB 扩展直接调试，避免 lldb-mi 依赖问题。
+      "name": "Debug sam_ug_qt_host",
+      "type": "lldb",
+      "request": "launch",
+      "program": "${workspaceFolder}/qt-host/build/sam_ug_qt_host",
+      // 默认附加 web-manual-mode=true，便于 F5 直接进入可手输调试模式。
+      // 如需模拟打包强约束行为，可改为 false 或删除该参数。
+      "args": ["--web-manual-mode=true"],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/qt-host",
+      "env": {},
+      "terminal": "integrated",
+      // 启动调试前先执行构建任务，确保二进制最新。
+      "preLaunchTask": "Build Qt Host (Debug)"
+    }
+  ]
+}
