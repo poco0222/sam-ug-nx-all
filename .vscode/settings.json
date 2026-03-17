@@ -1,5 +1,5 @@
 {
-  "cmake.sourceDirectory": "/Users/PopoY/workingFile/AllProjects/sam/sam-ug-qt-all/qt-host",
+  "cmake.sourceDirectory": "/Users/PopoY/workingFiles/Projects/SAM/sam-ug-nx-all/qt-host",
   "cmake.buildDirectory": "/Users/PopoY/workingFile/AllProjects/sam/sam-ug-qt-all/qt-host/build",
   "cmake.generator": "Unix Makefiles",
   "cmake.configureSettings": {

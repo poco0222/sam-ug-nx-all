@@ -20,6 +20,7 @@
 #include <QNetworkRequest>
 #include <QRegularExpression>
 #include <QSet>
+#include <QStandardPaths>
 #include <QStringList>
 #include <QTimer>
 #include <QUrl>
@@ -32,6 +33,26 @@ namespace {
  */
 QString normalizeText(const QString& value) {
   return value.trimmed();
+}
+
+/**
+ * @brief 返回宿主默认持久化目录。
+ * @details Windows 维持参考项目目录；非 Windows 使用 Qt 官方推荐的 AppDataLocation。
+ * @returns QString 默认持久化目录。
+ */
+QString defaultHostDataDirectoryPath() {
+#ifdef Q_OS_WIN
+  return QStringLiteral("D:/UGerkaiInfo/userInfo");
+#else
+  /** @brief Qt 标准应用数据目录，避免将 Windows 风格路径误写到当前工作区。 */
+  const QString standardPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+  if (!standardPath.isEmpty()) {
+    return standardPath;
+  }
+
+  /** @brief 标准目录不可用时的兜底路径，保证宿主仍有可写位置。 */
+  return QDir::homePath() + QStringLiteral("/.sam-ug-qt-host");
+#endif
 }
 
 /**
@@ -75,12 +96,12 @@ QString compilerDisplayName(const CompilerInfo& info) {
  * @returns QString 本地文件路径。
  */
 QString compilerInfoFilePath() {
-  const QString envPath = normalizeText(qEnvironmentVariable("SAM_COMPILER_INFO_PATH"));
-  if (!envPath.isEmpty()) {
-    return envPath;
+  /** @brief 支持通过环境变量覆盖默认 userName.txt 路径。 */
+  const QString overridePath = normalizeText(qEnvironmentVariable("SAM_COMPILER_INFO_PATH"));
+  if (!overridePath.isEmpty()) {
+    return overridePath;
   }
-  // 与参考项目保持一致的默认路径。
-  return QStringLiteral("D:/UGerkaiInfo/userInfo/userName.txt");
+  return defaultHostDataDirectoryPath() + QStringLiteral("/userName.txt");
 }
 
 /**
@@ -229,11 +250,12 @@ QJsonArray ensureCurrentCompilerInOptions(const QJsonArray& options, const Compi
  * @returns QString 日志文件路径。
  */
 QString apiLogFilePath() {
-  const QString overridePath = normalizeText(qEnvironmentVariable("SAM_API_LOG_PATH"));
-  if (!overridePath.isEmpty()) {
-    return overridePath;
+  /** @brief 支持通过环境变量覆盖默认 API 日志路径。 */
+  const QString envPath = normalizeText(qEnvironmentVariable("SAM_API_LOG_PATH"));
+  if (!envPath.isEmpty()) {
+    return envPath;
   }
-  return QStringLiteral("D:/UGerkaiInfo/userInfo/APIlog");
+  return defaultHostDataDirectoryPath() + QStringLiteral("/APIlog.log");
 }
 
 /**
@@ -330,15 +352,17 @@ CompilerInfo compilerFromUploadRoot(const QJsonObject& uploadRoot) {
 
 /**
  * @brief 从参考工程保存的本地文件读取当前编制人信息。
- * @details 参考路径：D:\UGerkaiInfo\userInfo\userName.txt
+ * @details 优先读取当前平台默认路径；Windows 额外兼容历史反斜杠路径。
  * @returns CompilerInfo 编制人信息，读取失败返回空结构。
  */
 CompilerInfo compilerFromLocalUserFile() {
   QStringList candidatePaths;
   // 优先读取可配置路径。
   candidatePaths.append(compilerInfoFilePath());
+#ifdef Q_OS_WIN
   // 兼容 Windows 风格反斜杠路径。
   candidatePaths.append(QStringLiteral("D:\\UGerkaiInfo\\userInfo\\userName.txt"));
+#endif
 
   for (const QString& filePath : candidatePaths) {
     QFile file(filePath);
@@ -440,6 +464,14 @@ CompilerInfo resolveCompilerInfo(const QJsonObject& uploadRoot) {
   info.userName = QStringLiteral("PopoY");
   info.nickName = QStringLiteral("PopoY");
   return info;
+}
+
+QString resolveCompilerInfoFilePath() {
+  return compilerInfoFilePath();
+}
+
+QString resolveApiLogFilePath() {
+  return apiLogFilePath();
 }
 
 Bridge::Bridge(QObject* parent) : QObject(parent) {}

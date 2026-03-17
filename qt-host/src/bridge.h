@@ -27,6 +27,18 @@ struct CompilerInfo {
 CompilerInfo resolveCompilerInfo(const QJsonObject& uploadRoot);
 
 /**
+ * @brief 解析当前平台下的默认编制人本地文件路径。
+ * @returns QString 默认 userName.txt 路径。
+ */
+QString resolveCompilerInfoFilePath();
+
+/**
+ * @brief 解析当前平台下的默认 API 日志文件路径。
+ * @returns QString 默认 APIlog.log 路径。
+ */
+QString resolveApiLogFilePath();
+
+/**
  * @class Bridge
  * @brief 桥接对象，负责向前端分发上下文与错误消息。
  */

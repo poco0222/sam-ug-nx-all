@@ -122,8 +122,15 @@ cmake --build qt-host/build
 
 ### 6.3 Qt 环境变量
 
-- `SAM_COMPILER_INFO_PATH`：编制人信息本地文件路径（默认 `D:/UGerkaiInfo/userInfo/userName.txt`）
+- `SAM_COMPILER_INFO_PATH`：编制人信息本地文件路径
+  - Windows 默认：`D:/UGerkaiInfo/userInfo/userName.txt`
+  - 非 Windows 默认：Qt `AppDataLocation` 下的 `userName.txt`
 - `SAM_COMPILER_API_URL`：编制人下拉接口地址（未配置时使用内置默认地址）
+
+启动阶段 API 日志默认写入位置：
+
+- Windows 默认：`D:/UGerkaiInfo/userInfo/APIlog.log`
+- 非 Windows 默认：Qt `AppDataLocation` 下的 `APIlog.log`
 
 当前内置默认编制人接口地址为：
 

@@ -6,9 +6,9 @@
   "version": "0.2.0",
   "configurations": [
     {
-      // 使用 CodeLLDB 扩展直接调试，避免 lldb-mi 依赖问题。
+      // 当前环境已安装 cpptools，统一使用其官方支持的 cppdbg + LLDB 配置。
       "name": "Debug sam_ug_qt_host",
-      "type": "lldb",
+      "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/qt-host/build/sam_ug_qt_host",
       // 默认附加 web-manual-mode=true，便于 F5 直接进入可手输调试模式。
@@ -16,8 +16,12 @@
       "args": ["--web-manual-mode=true"],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}/qt-host",
-      "env": {},
-      "terminal": "integrated",
+      // cpptools 要求 environment 为数组格式，避免使用 CodeLLDB 的 env 对象语法。
+      "environment": [],
+      // 交由 cpptools 使用 LLDB 调试后端，避免依赖未安装的 CodeLLDB 扩展。
+      "MIMode": "lldb",
+      // 保持在 VS Code 内部控制台运行，避免额外弹出外部终端。
+      "externalConsole": false,
       // 启动调试前先执行构建任务，确保二进制最新。
       "preLaunchTask": "Build Qt Host (Debug)"
     }

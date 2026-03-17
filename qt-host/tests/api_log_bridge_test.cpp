@@ -6,6 +6,7 @@
  */
 #include <iostream>
 
+#include <QCoreApplication>
 #include <QFile>
 #include <QTextStream>
 
@@ -15,8 +16,13 @@
  * @brief 主测试入口。
  * @returns int 测试通过返回 0，失败返回 1。
  */
-int main() {
-  const QByteArray mockApiLogPath = QByteArray("/tmp/sam-qt-host-APIlog.txt");
+int main(int argc, char* argv[]) {
+  QCoreApplication app(argc, argv);
+  app.setApplicationName(QStringLiteral("SAM UG Qt Host"));
+  app.setOrganizationName(QStringLiteral("SAM"));
+
+  /** @type {QByteArray} 显式覆盖路径，验证桥接仍支持环境变量优先。 */
+  const QByteArray mockApiLogPath = QByteArray("/tmp/sam-qt-host-APIlog.log");
   qputenv("SAM_API_LOG_PATH", mockApiLogPath);
 
   Bridge bridge;
@@ -44,6 +50,30 @@ int main() {
     std::cerr << "期望 APIlog 包含写入内容，实际内容为: " << content.toStdString() << std::endl;
     return 1;
   }
+
+  // 清理环境变量后验证默认路径解析，避免 macOS/Linux 回退到 Windows 风格路径。
+  qunsetenv("SAM_API_LOG_PATH");
+  /** @type {QString} 当前平台解析出的默认 API 日志路径。 */
+  const QString defaultApiLogPath = resolveApiLogFilePath();
+  if (!defaultApiLogPath.endsWith(QStringLiteral("/APIlog.log"))) {
+    std::cerr << "期望默认 API 日志文件名为 APIlog.log，实际为: "
+              << defaultApiLogPath.toStdString() << std::endl;
+    return 1;
+  }
+
+#ifdef Q_OS_WIN
+  if (!defaultApiLogPath.startsWith(QStringLiteral("D:/UGerkaiInfo/userInfo/"))) {
+    std::cerr << "期望 Windows 默认 APIlog 路径保持参考工程目录，实际为: "
+              << defaultApiLogPath.toStdString() << std::endl;
+    return 1;
+  }
+#else
+  if (defaultApiLogPath.startsWith(QStringLiteral("D:/UGerkaiInfo/userInfo/"))) {
+    std::cerr << "期望非 Windows 默认 APIlog 路径不再使用 D:/...，实际为: "
+              << defaultApiLogPath.toStdString() << std::endl;
+    return 1;
+  }
+#endif
 
   return 0;
 }
